@@ -5,7 +5,7 @@ This repository contains official implementation code of paper **Topological and
 
 This model, named TSNN, is a Topological and Sequential Neural Network model to detect fake news by news diffusion network. Fake news can be easily propagated through social media and cause negative societal effects. We introduce deep learning based automatic fake news detection model with capturing diffusion pattern on social network.
 
-![TSNN architecture](./img/model_architecture.pdf)
+![TSNN architecture](./img/model_architecture.png)
 
 
 ## Getting Started
@@ -17,8 +17,7 @@ This model, named TSNN, is a Topological and Sequential Neural Network model to 
 - Dependencies listed in the `requirements.txt` file.
 
 ### Installation
-
-0. Clone the repository and install dependencies:
+Clone the repository and install dependencies:
 
   ```bash
   git clone https://github.com/dongin1009/TSNN-DFN.git
@@ -26,7 +25,6 @@ This model, named TSNN, is a Topological and Sequential Neural Network model to 
   # Install library
   pip install -r requirements.txt
   ```
-
 
 ## Get the Data
 Our model trains and evaluates on `PolitiFact` and `GossipCop`, which are the benchmark datasets for Fake News Detection. You can download the benchmark datasets in graph-structured data from the [GNN-FakeNews project](https://github.com/safe-graph/GNN-FakeNews?tab=readme-ov-file#datasets).
@@ -66,7 +64,7 @@ python main.py --dataset gossipcop --lr 0.0005 --use_time_decay_score
 ```
 
 ### For baselines
-We set the other settings and environment as same as TSNN training condition.
+We set the other settings and environment as same as TSNN training conditions.
 ```python
 # model_list = ["TSNN", "UPFD-gcn", "UPFD-gat", "UPFD-sage", "UPFD-transformer", "BiGCN", "GCNFN"]
 python main.py --dataset {DATASET} --lr {LEARNING RATE} --model 
@@ -83,16 +81,13 @@ This performance table shows averaged performance on 5 cross-validations and sel
 |**UPSR*|91.4|91.0|97.7|97.6|
 |**TSNN**|**92.15**|**92.11**|**97.91**|**97.88**|
 
-\* UPSR didn't provide its code, so the indicated are results from its original paper.
+\* *UPSR didn't provide its code, so the indicated are results from its original paper.*
 
-\* For fair comparison, we set most settings to same with UPSR as possible we can. 
+\* *For fair comparison, we set most settings to same with UPSR as possible we can.*
 ## For ablation study
 We conducted ablation studies to validate the 'time-decay GCNs' module and 'sequential information layer' module.
 ### Time-Decay GCNs
-```python
-# with time-decay score / with Depth div
-python main.py --dataset {DATASET} --lr {LEARNING RATE} --use_time_decay_score --use_depth_divide
-```
+
 Using the 'minute-based' time-decay function outperforms the 'second-based', and 'no time-decay' functions, and the 'adding depth divide' methods.
 |time-decay|pol_Acc|pol_F1|gos_acc|gos_F1|
 |---|:---:|:---:|:---:|:---:|
@@ -103,13 +98,12 @@ Using the 'minute-based' time-decay function outperforms the 'second-based', and
 |*w*/*o* time-decay|89.62|89.59|97.25|97.21|
 |+ (*w*/ Depth div)|90.81|90.59|97.34|97.30|
 
+```python
+# with time-decay score / with Depth div
+python main.py --dataset {DATASET} --lr {LEARNING RATE} --use_time_decay_score --use_depth_divide
+```
 
 ### Sequential Information Layer
-```python
-# seq_layer_type = ["transformer", "transformer_encoder", "lstm", "gru"]
-# num_seq_layers = 2
-python main.py --dataset {DATASET} --lr {LEARNING RATE} --seq_layer_type {SEQ_TYPE} --num_seq_layers {NUM}
-```
 We selected 'transformer' model as a sequential information layer and compared it with several configurations. The '2 encoder - 2 decoder' of transformer is most effective for capturing news diffusion sequences.
 |sequential layer|pol_Acc|pol_F1|gos_acc|gos_F1|
 |---|:---:|:---:|:---:|:---:|
@@ -120,7 +114,11 @@ We selected 'transformer' model as a sequential information layer and compared i
 |seq-LSTM|91.39|91.34|97.09|97.05|
 |seq-GRU|91.14|91.10|97.05|97.01|
 
-
+```python
+# seq_layer_type = ["transformer", "transformer_encoder", "lstm", "gru"]
+# num_seq_layers = 2
+python main.py --dataset {DATASET} --lr {LEARNING RATE} --seq_layer_type {SEQ_TYPE} --num_seq_layers {NUM}
+```
 
 ## Cite
 ```bibtex
